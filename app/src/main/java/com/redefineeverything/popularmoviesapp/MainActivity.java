@@ -1,15 +1,18 @@
 package com.redefineeverything.popularmoviesapp;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
-
 import com.squareup.picasso.Picasso;
+
 
 import java.util.ArrayList;
 
@@ -34,9 +37,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mMovieList = createFakeData();
-        for(Movie movie:mMovieList){
-            Log.i("MainActivity","Movie Thumb = " + movie.getImagePath());
-        }
 
         GridView listView = (GridView) findViewById(R.id.main_gridview);
         mMovieAdapter = new MovieAdapter(this, mMovieList);

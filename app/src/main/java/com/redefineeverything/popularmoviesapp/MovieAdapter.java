@@ -16,10 +16,19 @@ import java.util.ArrayList;
  * Created by IainForrest on 19/08/2016.
  */
 public class MovieAdapter extends ArrayAdapter {
+    private Context mContext;
+    private final static Double WIDTH_HEIGHT_RATIO = 1.5;
+    private final int NUM_OF_COLUMNS = getContext().getResources().getInteger(R.integer.num_columns);
+    private int mWidth;
+    private Double mHeight;
 
 
     public MovieAdapter (Context context, ArrayList<Movie> movies){
         super(context,0,movies);
+        mContext = context;
+        mWidth= (getContext().getResources().getDisplayMetrics().widthPixels) / NUM_OF_COLUMNS;
+        mHeight = mWidth * WIDTH_HEIGHT_RATIO;
+
     }
 
     @Override
@@ -39,8 +48,10 @@ public class MovieAdapter extends ArrayAdapter {
         Movie currentMovie = (Movie) getItem(position);
 
         String imageURL = MainActivity.THUMBNAIL_BASE_URL + currentMovie.getImagePath();
-        Log.d("MovieAdapter","Got to imageloader in Apadter for item : " + Integer.toString(position));
-        Picasso.with(getContext()).load(imageURL).into(holder.thumbImage);
+        Picasso.with(getContext())
+                .load(imageURL)
+                .centerCrop().resize(mWidth,mHeight.intValue())
+                .into(holder.thumbImage);
 
 
         return convertView;
