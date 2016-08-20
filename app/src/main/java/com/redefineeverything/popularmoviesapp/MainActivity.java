@@ -7,10 +7,14 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.squareup.picasso.Picasso;
 
 
@@ -20,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
     MovieAdapter mMovieAdapter;
 
     ArrayList<Movie> mMovieList;
+
+    View mPreviousView;
 
     public final static String THUMBNAIL_BASE_URL = "http://image.tmdb.org/t/p/w185";
 
@@ -38,23 +44,59 @@ public class MainActivity extends AppCompatActivity {
 
         mMovieList = createFakeData();
 
-        GridView listView = (GridView) findViewById(R.id.main_gridview);
+        final GridView gridView = (GridView) findViewById(R.id.main_gridview);
         mMovieAdapter = new MovieAdapter(this, mMovieList);
-        listView.setAdapter(mMovieAdapter);
+        gridView.setAdapter(mMovieAdapter);
+
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                if (mPreviousView != null){
+                    TextView previousMovieTitle = (TextView) mPreviousView.findViewById(R.id.movie_title);
+                    previousMovieTitle.setVisibility(View.GONE);
+                }
+
+                TextView movieTitle = (TextView) view.findViewById(R.id.movie_title);
+                movieTitle.setVisibility(View.VISIBLE);
+
+                movieTitle.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(MainActivity.this, "you clicked on the title" , Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                mPreviousView = view;
+
+            }
+        });
+
+
 
     }
+    public View getViewByPosition(int pos, GridView listView) {
+        final int firstListItemPosition = listView.getFirstVisiblePosition();
+        final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
 
+        if (pos < firstListItemPosition || pos > lastListItemPosition ) {
+            return listView.getAdapter().getView(pos, null, listView);
+        } else {
+            final int childIndex = pos - firstListItemPosition;
+            return listView.getChildAt(childIndex);
+        }
+    }
     private ArrayList<Movie> createFakeData(){
         ArrayList<Movie> movieImages = new ArrayList<>();
-        movieImages.add(new Movie("/e1mjopzAS2KNsvpbpahQ1a6SkSn.jpg"));
-        movieImages.add(new Movie("/cGOPbv9wA5gEejkUN892JrveARt.jpg"));
-        movieImages.add(new Movie("/lFSSLTlFozwpaGlO31OoUeirBgQ.jpg"));
-        movieImages.add(new Movie("/AoT2YrJUJlg5vKE3iMOLvHlTd3m.jpg"));
-        movieImages.add(new Movie("/vOipe2myi26UDwP978hsYOrnUWC.jpg"));
-        movieImages.add(new Movie("/kqjL17yufvn9OVLyXYpvtyrFfak.jpg"));
-        movieImages.add(new Movie("/5N20rQURev5CNDcMjHVUZhpoCNC.jpg"));
-        movieImages.add(new Movie("/inVq3FRqcYIRl2la8iZikYYxFNR.jpg"));
-        movieImages.add(new Movie("/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg"));
+        movieImages.add(new Movie("/e1mjopzAS2KNsvpbpahQ1a6SkSn.jpg","Suicide Squad"));
+        movieImages.add(new Movie("/cGOPbv9wA5gEejkUN892JrveARt.jpg","Batman VS Superman"));
+        movieImages.add(new Movie("/lFSSLTlFozwpaGlO31OoUeirBgQ.jpg","Jason Bourne"));
+        movieImages.add(new Movie("/AoT2YrJUJlg5vKE3iMOLvHlTd3m.jpg","Bourne 2"));
+        movieImages.add(new Movie("/vOipe2myi26UDwP978hsYOrnUWC.jpg","Jungle Book"));
+        movieImages.add(new Movie("/kqjL17yufvn9OVLyXYpvtyrFfak.jpg","Mad Max"));
+        movieImages.add(new Movie("/5N20rQURev5CNDcMjHVUZhpoCNC.jpg","Civil War"));
+        movieImages.add(new Movie("/inVq3FRqcYIRl2la8iZikYYxFNR.jpg","Deadpool"));
+        movieImages.add(new Movie("/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg","Interstellar"));
         movieImages.add(new Movie("/a1DAxfDpUhZOn6j42HOJxfaIBPw.jpg"));
         movieImages.add(new Movie("/gj282Pniaa78ZJfbaixyLXnXEDI.jpg"));
         movieImages.add(new Movie("/jjBgi2r5cRt36xF6iNUEhzscEcb.jpg"));

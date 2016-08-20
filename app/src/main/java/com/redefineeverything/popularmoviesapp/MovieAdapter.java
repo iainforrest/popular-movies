@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -40,6 +41,7 @@ public class MovieAdapter extends ArrayAdapter {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_layout,parent,false);
             holder = new ViewHolder();
             holder.thumbImage = (ImageView) convertView.findViewById(R.id.list_item_imageview);
+            holder.title = (TextView) convertView.findViewById(R.id.movie_title);
             convertView.setTag(holder);
         }else {
             holder = (ViewHolder) convertView.getTag();
@@ -52,6 +54,8 @@ public class MovieAdapter extends ArrayAdapter {
                 .load(imageURL)
                 .centerCrop().resize(mWidth,mHeight.intValue())
                 .into(holder.thumbImage);
+        holder.title.setText(currentMovie.getTitle());
+        holder.title.setVisibility(View.GONE);
 
 
         return convertView;
@@ -60,5 +64,6 @@ public class MovieAdapter extends ArrayAdapter {
 
     static class ViewHolder {
         public ImageView thumbImage;
+        public TextView title;
     }
 }

@@ -18,6 +18,12 @@ public class Movie {
 
     public Movie(String imagePath){
         mImagePath = imagePath;
+        mTitle = "default Title";
+    }
+
+    public Movie(String imagePath, String title){
+        mImagePath = imagePath;
+        mTitle = title;
     }
 
     public Movie(int mID, String mTitle, String mImagePath, String mOverview, Date mReleaseDate, float mPopularity, float mVoteAverage, int mVoteCount) {
