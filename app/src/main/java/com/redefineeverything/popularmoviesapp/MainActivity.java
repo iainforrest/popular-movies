@@ -52,14 +52,28 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
+                /*
+                uses the previous view (see below) and hides the info overlay.
+                So that only one is showing at a time.
+
+                problem was this doesn't work if you scroll the previous item off the screen
+                before selecting a new one. Solved (not perfectly) by resetting every item to
+                have the info hidden in the MovieAdapter.
+                */
                 if (mPreviousView != null){
                     TextView previousMovieTitle = (TextView) mPreviousView.findViewById(R.id.movie_title);
                     previousMovieTitle.setVisibility(View.GONE);
                 }
 
+                //Find the hidden text view with movie info and make visible
                 TextView movieTitle = (TextView) view.findViewById(R.id.movie_title);
                 movieTitle.setVisibility(View.VISIBLE);
 
+                /*
+                * Set an onclick listener on the hidden info field, so that if the field is
+                * tapped then the user is taken to the details screen
+                * TODO: replace toast with Intent to send to details screen
+                * */
                 movieTitle.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -67,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+                //sets this view to be the previous view for the next time an item is tapped
                 mPreviousView = view;
 
             }
@@ -75,17 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-    public View getViewByPosition(int pos, GridView listView) {
-        final int firstListItemPosition = listView.getFirstVisiblePosition();
-        final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
 
-        if (pos < firstListItemPosition || pos > lastListItemPosition ) {
-            return listView.getAdapter().getView(pos, null, listView);
-        } else {
-            final int childIndex = pos - firstListItemPosition;
-            return listView.getChildAt(childIndex);
-        }
-    }
     private ArrayList<Movie> createFakeData(){
         ArrayList<Movie> movieImages = new ArrayList<>();
         movieImages.add(new Movie("/e1mjopzAS2KNsvpbpahQ1a6SkSn.jpg","Suicide Squad"));
