@@ -1,6 +1,8 @@
 package com.redefineeverything.popularmoviesapp;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +20,10 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 
+import org.json.JSONException;
+
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -42,11 +48,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mMovieList = createFakeData();
-
         final GridView gridView = (GridView) findViewById(R.id.main_gridview);
-        mMovieAdapter = new MovieAdapter(this, mMovieList);
+        mMovieAdapter = new MovieAdapter(this, new ArrayList<Movie>());
         gridView.setAdapter(mMovieAdapter);
+
+        MovieAsyncTask movieAsyncTask = new MovieAsyncTask();
+        movieAsyncTask.execute("popular");
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -116,5 +123,55 @@ public class MainActivity extends AppCompatActivity {
         movieImages.add(new Movie("/y31QB9kn3XSudA15tV7UWQ9XLuW.jpg"));
 
         return movieImages;
+    }
+
+    private class MovieAsyncTask extends AsyncTask<String, Void, ArrayList<Movie>> {
+
+        private final String LOG_TAG = MovieAsyncTask.class.getSimpleName();
+
+
+        @Override
+        protected void onPostExecute(ArrayList<Movie> movies) {
+            if (movies == null){
+                Toast.makeText(MainActivity.this, "Sorry, No Movies found, Check Internet connection and preferences", Toast.LENGTH_SHORT).show();
+            }else {
+                mMovieAdapter.clear();
+                mMovieAdapter.addAll(movies);
+            }
+
+        }
+
+        @Override
+        protected ArrayList<Movie> doInBackground(String... sortOrder) {
+            //TODO check url[0] is an url
+            //TODO connect to url and fetch stream
+            //TODO convert stream to JSONObject
+            //TODO go through JSONObject and create Movies
+
+            ArrayList<Movie> allMovies = new ArrayList<Movie>();
+            String moviesJSONString;
+
+            URL url = Utils.buildQueryUrl(sortOrder[0]);
+
+            try {
+                moviesJSONString = Utils.getJSONfromURL(url);
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.e(LOG_TAG,"Error with HTTP request and receiving JSON : "+ e.getMessage());
+                return null;
+            }
+
+            try {
+                allMovies = Utils.getMoviesFromJSON(moviesJSONString);
+            } catch (JSONException e) {
+                Log.e(LOG_TAG + " :DoInBackground", "Error Parsing JSON : "+e.getMessage());
+                return null;
+            }
+
+
+            return allMovies;
+        }
+
+
     }
 }
