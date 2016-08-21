@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,14 +69,15 @@ public class MainActivity extends AppCompatActivity {
                 have the info hidden in the MovieAdapter.
                 */
                 if (mPreviousView != null){
-                    TextView previousMovieTitle = (TextView) mPreviousView.findViewById(R.id.movie_title);
-                    previousMovieTitle.setVisibility(View.GONE);
+                    RelativeLayout previousOverlayInfo = (RelativeLayout) mPreviousView.findViewById(R.id.overlay_info);
+                    previousOverlayInfo.setVisibility(View.GONE);
                 }
 
                 //Find the hidden text view with movie info and make visible
                 TextView movieTitle = (TextView) view.findViewById(R.id.movie_title);
-                movieTitle.setVisibility(View.VISIBLE);
-
+                //movieTitle.setVisibility(View.VISIBLE);
+                RelativeLayout overlayInfo = (RelativeLayout) view.findViewById(R.id.overlay_info);
+                overlayInfo.setVisibility(View.VISIBLE);
                 /*
                 * Set an onclick listener on the hidden info field, so that if the field is
                 * tapped then the user is taken to the details screen

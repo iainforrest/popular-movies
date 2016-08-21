@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -40,8 +41,14 @@ public class MovieAdapter extends ArrayAdapter {
         if (convertView == null){
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_layout,parent,false);
             holder = new ViewHolder();
+            holder.rootLayout = (RelativeLayout) convertView.findViewById(R.id.root_layout);
+
             holder.thumbImage = (ImageView) convertView.findViewById(R.id.list_item_imageview);
+            holder.overlayInfo = (RelativeLayout) convertView.findViewById(R.id.overlay_info);
             holder.title = (TextView) convertView.findViewById(R.id.movie_title);
+            holder.score = (TextView) convertView.findViewById(R.id.score);
+            holder.releaseDate = (TextView) convertView.findViewById(R.id.release_date);
+
             convertView.setTag(holder);
         }else {
             holder = (ViewHolder) convertView.getTag();
@@ -54,8 +61,14 @@ public class MovieAdapter extends ArrayAdapter {
                 .load(imageURL)
                 .centerCrop().resize(mWidth,mHeight.intValue())
                 .into(holder.thumbImage);
+        holder.rootLayout.getLayoutParams().height = mHeight.intValue();
+        holder.rootLayout.getLayoutParams().width = mWidth;
+
         holder.title.setText(currentMovie.getTitle());
-        holder.title.setVisibility(View.GONE);
+        holder.score.setText(Double.toString(currentMovie.getScore()));
+        holder.releaseDate.setText(currentMovie.getFormattedReleaseDate());
+
+        holder.overlayInfo.setVisibility(View.GONE);
 
 
         return convertView;
@@ -63,7 +76,11 @@ public class MovieAdapter extends ArrayAdapter {
 
 
     static class ViewHolder {
-        public ImageView thumbImage;
-        public TextView title;
+        private RelativeLayout rootLayout;
+        private ImageView thumbImage;
+        private TextView title;
+        private RelativeLayout overlayInfo;
+        private TextView score;
+        private TextView releaseDate;
     }
 }

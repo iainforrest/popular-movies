@@ -1,7 +1,6 @@
 package com.redefineeverything.popularmoviesapp;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created by IainForrest on 18/08/2016.
@@ -14,12 +13,12 @@ public class Movie {
     private String mOverview;
     private String mReleaseDate;
     private double mPopularity;
-    private double mVoteAverage;
+    private double mScore;
     private ArrayList<Integer> mGenres;
 
     public Movie(String imagePath){
         mImagePath = imagePath;
-        mTitle = "default Title";
+        mTitle = "default1 Title";
     }
 
     public Movie(String imagePath, String title){
@@ -27,14 +26,14 @@ public class Movie {
         mTitle = title;
     }
 
-    public Movie(int mID, String mTitle, String mImagePath, String mOverview, String mReleaseDate, double mPopularity, double mVoteAverage, ArrayList<Integer> mGenres) {
+    public Movie(int mID, String mTitle, String mImagePath, String mOverview, String mReleaseDate, double mPopularity, double mScore, ArrayList<Integer> mGenres) {
         this.mID = mID;
         this.mTitle = mTitle;
         this.mImagePath = mImagePath;
         this.mOverview = mOverview;
         this.mReleaseDate = mReleaseDate;
         this.mPopularity = mPopularity;
-        this.mVoteAverage = mVoteAverage;
+        this.mScore = mScore;
         this.mGenres = mGenres;
     }
 
@@ -54,16 +53,16 @@ public class Movie {
         return mOverview;
     }
 
-    public String getReleaseDate() {
-        return mReleaseDate;
+    public String getFormattedReleaseDate() {
+        return "(" + mReleaseDate.substring(0,4) + ")";
     }
 
     public double getPopularity() {
         return mPopularity;
     }
 
-    public double getVoteAverage() {
-        return mVoteAverage;
+    public double getScore() {
+        return mScore;
     }
 
     public String getmGenres() {
@@ -79,7 +78,7 @@ public class Movie {
                 ", mOverview='" + mOverview + '\'' +
                 ", mReleaseDate=" + mReleaseDate +
                 ", mPopularity=" + mPopularity +
-                ", mVoteAverage=" + mVoteAverage +
+                ", mScore=" + mScore +
                 ", mGenres=" + mGenres +
                 '}';
     }
