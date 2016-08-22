@@ -59,6 +59,7 @@ public class MovieAdapter extends ArrayAdapter {
         String imageURL = MainActivity.THUMBNAIL_BASE_URL + currentMovie.getImagePath();
         Picasso.with(getContext())
                 .load(imageURL)
+                .placeholder(R.drawable.movie_placeholder)
                 .centerCrop().resize(mWidth,mHeight.intValue())
                 .into(holder.thumbImage);
         holder.rootLayout.getLayoutParams().height = mHeight.intValue();
