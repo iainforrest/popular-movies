@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        toggleProgressBar(View.VISIBLE);
 
         final GridView gridView = (GridView) findViewById(R.id.main_gridview);
         mMovieAdapter = new MovieAdapter(this, new ArrayList<Movie>());
@@ -100,32 +103,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private ArrayList<Movie> createFakeData(){
-        ArrayList<Movie> movieImages = new ArrayList<>();
-        movieImages.add(new Movie("/e1mjopzAS2KNsvpbpahQ1a6SkSn.jpg","Suicide Squad"));
-        movieImages.add(new Movie("/cGOPbv9wA5gEejkUN892JrveARt.jpg","Batman VS Superman"));
-        movieImages.add(new Movie("/lFSSLTlFozwpaGlO31OoUeirBgQ.jpg","Jason Bourne"));
-        movieImages.add(new Movie("/AoT2YrJUJlg5vKE3iMOLvHlTd3m.jpg","Bourne 2"));
-        movieImages.add(new Movie("/vOipe2myi26UDwP978hsYOrnUWC.jpg","Jungle Book"));
-        movieImages.add(new Movie("/kqjL17yufvn9OVLyXYpvtyrFfak.jpg","Mad Max"));
-        movieImages.add(new Movie("/5N20rQURev5CNDcMjHVUZhpoCNC.jpg","Civil War"));
-        movieImages.add(new Movie("/inVq3FRqcYIRl2la8iZikYYxFNR.jpg","Deadpool"));
-        movieImages.add(new Movie("/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg","Interstellar"));
-        movieImages.add(new Movie("/a1DAxfDpUhZOn6j42HOJxfaIBPw.jpg"));
-        movieImages.add(new Movie("/gj282Pniaa78ZJfbaixyLXnXEDI.jpg"));
-        movieImages.add(new Movie("/jjBgi2r5cRt36xF6iNUEhzscEcb.jpg"));
-        movieImages.add(new Movie("/h28t2JNNGrZx0fIuAw8aHQFhIxR.jpg"));
-        movieImages.add(new Movie("/ghL4ub6vwbYShlqCFHpoIRwx2sm.jpg"));
-        movieImages.add(new Movie("/dCgm7efXDmiABSdWDHBDBx2jwmn.jpg"));
-        movieImages.add(new Movie("/sM33SANp9z6rXW8Itn7NnG1GOEs.jpg"));
-        movieImages.add(new Movie("/vNCeqxbKyDHL9LUza03V2Im16wB.jpg"));
-        movieImages.add(new Movie("/5JU9ytZJyR3zmClGmVm9q4Geqbd.jpg"));
-        movieImages.add(new Movie("/weUSwMdQIa3NaXVzwUoIIcAi85d.jpg"));
-        movieImages.add(new Movie("/2eQfjqlvPAxd9aLDs8DvsKLnfed.jpg"));
-        movieImages.add(new Movie("/y31QB9kn3XSudA15tV7UWQ9XLuW.jpg"));
-
-        return movieImages;
-    }
 
     private class MovieAsyncTask extends AsyncTask<String, Void, ArrayList<Movie>> {
 
@@ -134,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(ArrayList<Movie> movies) {
+            toggleProgressBar(View.GONE);
             if (movies == null){
                 Toast.makeText(MainActivity.this, "Sorry, No Movies found, Check Internet connection and preferences", Toast.LENGTH_SHORT).show();
             }else {
@@ -145,10 +123,6 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected ArrayList<Movie> doInBackground(String... sortOrder) {
-            //TODO check url[0] is an url
-            //TODO connect to url and fetch stream
-            //TODO convert stream to JSONObject
-            //TODO go through JSONObject and create Movies
 
             ArrayList<Movie> allMovies = new ArrayList<Movie>();
             String moviesJSONString;
@@ -174,6 +148,12 @@ public class MainActivity extends AppCompatActivity {
             return allMovies;
         }
 
+
+    }
+
+    public void toggleProgressBar(int visibility){
+        ProgressBar progressBar = (ProgressBar) findViewById(R.id.loading_spinner);
+        progressBar.setVisibility(visibility);
 
     }
 }
