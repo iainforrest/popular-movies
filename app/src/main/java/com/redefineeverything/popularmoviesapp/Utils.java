@@ -1,6 +1,7 @@
 package com.redefineeverything.popularmoviesapp;
 
 import android.app.Activity;
+import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.text.TextUtils;
@@ -31,6 +32,18 @@ public class Utils {
     private final static String LOG_TAG = Utils.class.getSimpleName();
 
     public Utils() {
+    }
+
+    public final static double WIDTH_HEIGHT_RATIO = 1.5;
+
+    public static int getAreaWidth(Context context){
+        int NUM_OF_COLUMNS = context.getResources().getInteger(R.integer.num_columns);
+        int width = context.getResources().getDisplayMetrics().widthPixels;
+        return width/NUM_OF_COLUMNS;
+    }
+
+    public static int getImageHeight(int width){
+        return Double.valueOf(width * WIDTH_HEIGHT_RATIO).intValue();
     }
 
     public final static HashMap<Integer, String> movieGenreMap = getMovieGenres();

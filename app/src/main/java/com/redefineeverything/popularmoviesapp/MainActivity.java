@@ -37,8 +37,6 @@ public class MainActivity extends AppCompatActivity {
 
     View mPreviousView;
 
-    public final static String THUMBNAIL_BASE_URL = "http://image.tmdb.org/t/p/w185";
-
     /*Implementaion
     * https://docs.google.com/document/d/1ZlN1fUsCSKuInLECcJkslIqvpKlP7jWL2TP9m6UiA6I/pub?embedded=true
     *
@@ -70,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         private MovieItemClick(){}
 
         @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
             /*
                 uses the previous view (see below) and hides the info overlay.
                 So that only one is showing at a time.
@@ -96,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     Intent intent  = new Intent(MainActivity.this, MovieDetailsActivity.class);
+                    intent.putExtra("Movie",(Movie)mMovieAdapter.getItem(i));
                     startActivity(intent);
                 }
             });

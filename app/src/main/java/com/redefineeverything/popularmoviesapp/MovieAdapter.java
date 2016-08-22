@@ -19,17 +19,16 @@ import java.util.ArrayList;
  */
 public class MovieAdapter extends ArrayAdapter {
     private Context mContext;
-    private final static Double WIDTH_HEIGHT_RATIO = 1.5;
     private final int NUM_OF_COLUMNS = getContext().getResources().getInteger(R.integer.num_columns);
     private int mWidth;
-    private Double mHeight;
+    private int mHeight;
 
 
     public MovieAdapter (Context context, ArrayList<Movie> movies){
         super(context,0,movies);
         mContext = context;
-        mWidth= (getContext().getResources().getDisplayMetrics().widthPixels) / NUM_OF_COLUMNS;
-        mHeight = mWidth * WIDTH_HEIGHT_RATIO;
+        mWidth= Utils.getAreaWidth(context);
+        mHeight = Utils.getImageHeight(mWidth);
 
     }
 
@@ -56,13 +55,12 @@ public class MovieAdapter extends ArrayAdapter {
 
         Movie currentMovie = (Movie) getItem(position);
 
-        String imageURL = MainActivity.THUMBNAIL_BASE_URL + currentMovie.getImagePath();
         Picasso.with(getContext())
-                .load(imageURL)
+                .load(currentMovie.getImagePath())
                 .placeholder(R.drawable.movie_placeholder)
-                .centerCrop().resize(mWidth,mHeight.intValue())
+                .centerCrop().resize(mWidth,mHeight)
                 .into(holder.thumbImage);
-        holder.rootLayout.getLayoutParams().height = mHeight.intValue();
+        holder.rootLayout.getLayoutParams().height = mHeight;
         holder.rootLayout.getLayoutParams().width = mWidth;
 
         holder.title.setText(currentMovie.getTitle());
