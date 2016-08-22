@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.redefineeverything.popularmoviesapp.MovieDetailsActivity">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        android:gravity="left"
+        android:padding="16dp"
+        android:textColor="#ffffff"
+        android:textSize="26sp"
+        android:text="Batman v Superman: Dawn of Justice" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <ImageView
+                android:id="@+id/thumbnail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/movie_placeholder" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/thumbnail"
+                android:orientation="vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="16dp">
+
+                <TextView
+                    style="@style/movie_info"
+                    android:text="2016" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="16dp"
+                    android:text="Action, Adventure, Fantasy"
+                    android:textSize="16sp"
+                    android:textStyle="italic" />
+
+                <TextView
+                    style="@style/movie_info"
+                    android:id="@+id/score"
+                    android:text="5.7/10"
+                    android:drawableLeft="@drawable/ic_action_grade"
+                    android:drawablePadding="8dp" />
+            </LinearLayout>
+
+
+            <TextView
+                style="@style/movie_info"
+                android:textSize="16sp"
+                android:id="@+id/description"
+                android:text="@string/descrip_filler"
+                android:layout_below="@+id/thumbnail"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp" />
+        </RelativeLayout>
+
+    </ScrollView>
+
+
+</RelativeLayout>

@@ -36,6 +36,7 @@ public class Utils {
     public final static HashMap<Integer, String> movieGenreMap = getMovieGenres();
 
     private static HashMap<Integer, String> getMovieGenres() {
+        //TODO edit to work with getting genres from the website
         String url = "http://api.themoviedb.org/3/genre/movie/list?api_key=" + BuildConfig.APPLICATION_ID;
 
         JSONArray genres = null;
@@ -45,7 +46,8 @@ public class Utils {
         HashMap<Integer, String> movieGenresMap = new HashMap<Integer, String>();
 
         try {
-            genres = new JSONArray("[{\"id\":28,\"name\":\"Action\"},{\"id\":12,\"name\":\"Adventure\"},{\"id\":16,\"name\":\"Animation\"},{\"id\":35,\"name\":\"Comedy\"},{\"id\":80,\"name\":\"Crime\"},{\"id\":99,\"name\":\"Documentary\"},{\"id\":18,\"name\":\"Drama\"},{\"id\":10751,\"name\":\"Family\"},{\"id\":14,\"name\":\"Fantasy\"},{\"id\":10769,\"name\":\"Foreign\"},{\"id\":36,\"name\":\"History\"},{\"id\":27,\"name\":\"Horror\"},{\"id\":10402,\"name\":\"Music\"},{\"id\":9648,\"name\":\"Mystery\"},{\"id\":10749,\"name\":\"Romance\"},{\"id\":878,\"name\":\"Science Fiction\"},{\"id\":10770,\"name\":\"TV Movie\"},{\"id\":53,\"name\":\"Thriller\"},{\"id\":10752,\"name\":\"War\"},{\"id\":37,\"name\":\"Western\"}]");
+            genres = new JSONArray(
+                    "[{\"id\":28,\"name\":\"Action\"},{\"id\":12,\"name\":\"Adventure\"},{\"id\":16,\"name\":\"Animation\"},{\"id\":35,\"name\":\"Comedy\"},{\"id\":80,\"name\":\"Crime\"},{\"id\":99,\"name\":\"Documentary\"},{\"id\":18,\"name\":\"Drama\"},{\"id\":10751,\"name\":\"Family\"},{\"id\":14,\"name\":\"Fantasy\"},{\"id\":10769,\"name\":\"Foreign\"},{\"id\":36,\"name\":\"History\"},{\"id\":27,\"name\":\"Horror\"},{\"id\":10402,\"name\":\"Music\"},{\"id\":9648,\"name\":\"Mystery\"},{\"id\":10749,\"name\":\"Romance\"},{\"id\":878,\"name\":\"Science Fiction\"},{\"id\":10770,\"name\":\"TV Movie\"},{\"id\":53,\"name\":\"Thriller\"},{\"id\":10752,\"name\":\"War\"},{\"id\":37,\"name\":\"Western\"}]");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -169,7 +171,6 @@ public class Utils {
         final String JSON_GENRE_IDS = "genre_ids";
         final String JSON_MOVIE_ID = "id";
         final String JSON_TITLE = "title";
-        final String JSON_POPULARITY = "popularity";
         final String JSON_SCORE = "vote_average";
 
         ArrayList<Integer> genres;
@@ -192,7 +193,6 @@ public class Utils {
                         String description = movieDetails.getString(JSON_DESCRIPTION);
                         String releaseDate = movieDetails.getString(JSON_RELEASE_DATE);
                         int id = movieDetails.getInt(JSON_MOVIE_ID);
-                        double popularity = movieDetails.getDouble(JSON_POPULARITY);
                         double score = movieDetails.getDouble(JSON_SCORE);
                         String title = movieDetails.getString(JSON_TITLE);
 
@@ -209,7 +209,7 @@ public class Utils {
                         }
 
                         allMovies.add(new Movie(id,title,thumbImagePath,description,
-                                releaseDate,popularity,score,genres));
+                                releaseDate,score,genres));
                     } catch (JSONException e) {
                         Log.e(LOG_TAG + " GetMoviesFromJSON", "Error parsing single Movie JSON object");
                     }

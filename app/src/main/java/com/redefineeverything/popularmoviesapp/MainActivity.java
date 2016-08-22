@@ -1,7 +1,9 @@
 package com.redefineeverything.popularmoviesapp;
 
 import android.app.Activity;
+import android.app.Notification;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -57,13 +59,19 @@ public class MainActivity extends AppCompatActivity {
         gridView.setAdapter(mMovieAdapter);
 
         MovieAsyncTask movieAsyncTask = new MovieAsyncTask();
-        movieAsyncTask.execute("popular");
+        movieAsyncTask.execute(getString(R.string.popular));
 
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        gridView.setOnItemClickListener(new MovieItemClick());
+    }
 
-                /*
+
+    private class MovieItemClick implements AdapterView.OnItemClickListener {
+
+        private MovieItemClick(){}
+
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            /*
                 uses the previous view (see below) and hides the info overlay.
                 So that only one is showing at a time.
 
@@ -71,36 +79,30 @@ public class MainActivity extends AppCompatActivity {
                 before selecting a new one. Solved (not perfectly) by resetting every item to
                 have the info hidden in the MovieAdapter.
                 */
-                if (mPreviousView != null){
-                    RelativeLayout previousOverlayInfo = (RelativeLayout) mPreviousView.findViewById(R.id.overlay_info);
-                    previousOverlayInfo.setVisibility(View.GONE);
-                }
+            if (mPreviousView != null){
+                RelativeLayout previousOverlayInfo = (RelativeLayout) mPreviousView.findViewById(R.id.overlay_info);
+                previousOverlayInfo.setVisibility(View.GONE);
+            }
 
-                //Find the hidden text view with movie info and make visible
-                TextView movieTitle = (TextView) view.findViewById(R.id.movie_title);
-                //movieTitle.setVisibility(View.VISIBLE);
-                RelativeLayout overlayInfo = (RelativeLayout) view.findViewById(R.id.overlay_info);
-                overlayInfo.setVisibility(View.VISIBLE);
+            //Find the hidden View with movie info and make visible
+            RelativeLayout overlayInfo = (RelativeLayout) view.findViewById(R.id.overlay_info);
+            overlayInfo.setVisibility(View.VISIBLE);
                 /*
                 * Set an onclick listener on the hidden info field, so that if the field is
                 * tapped then the user is taken to the details screen
                 * TODO: replace toast with Intent to send to details screen
                 * */
-                movieTitle.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Toast.makeText(MainActivity.this, "you clicked on the title" , Toast.LENGTH_SHORT).show();
-                    }
-                });
+            overlayInfo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent  = new Intent(MainActivity.this, MovieDetailsActivity.class);
+                    startActivity(intent);
+                }
+            });
 
-                //sets this view to be the previous view for the next time an item is tapped
-                mPreviousView = view;
-
-            }
-        });
-
-
-
+            //sets this view to be the previous view for the next time an item is tapped
+            mPreviousView = view;
+        }
     }
 
 

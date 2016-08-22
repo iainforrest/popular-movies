@@ -84,7 +84,7 @@
             android:layout_alignParentRight="true"
             android:textColor="#ffffff"
             android:textSize="18sp"
-            android:text="More >>>"/>
+            android:text="@string/more"/>
 
 
     </RelativeLayout>
