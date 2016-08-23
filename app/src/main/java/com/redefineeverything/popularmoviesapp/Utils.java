@@ -90,7 +90,7 @@ public class Utils {
         }
         StringBuilder genreString = new StringBuilder();
         for (Integer id : genres) {
-            genreString.append(movieGenreMap.get(id));
+            genreString.append(movieGenreMap.get(id) + ", ");
         }
         return genreString.toString();
 

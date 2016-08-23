@@ -63,13 +63,23 @@
                     android:drawableLeft="@drawable/ic_action_grade"
                     android:drawablePadding="8dp" />
 
+                <TextView
+                    style="@style/movie_info"
+                    android:textSize="16sp"
+                    android:id="@+id/description_landscape"
+                    tools:text="@string/descrip_filler"
+                    android:layout_below="@+id/thumbnail"
+                    android:visibility="gone"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp" />
+
 
             </LinearLayout>
 
             <TextView
                 style="@style/movie_info"
                 android:textSize="16sp"
-                android:id="@+id/description"
+                android:id="@+id/description_portrait"
                 tools:text="@string/descrip_filler"
                 android:layout_below="@+id/thumbnail"
                 android:paddingLeft="16dp"

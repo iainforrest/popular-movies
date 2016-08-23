@@ -66,8 +66,9 @@ public class Movie implements Parcelable {
         return Double.toString(mScore) + "/10";
     }
 
-    public String getmGenres() {
-        return mGenres.toString();
+    public String getGenres() {
+
+        return Utils.getMovieGenres(mGenres);
     }
 
     @Override
