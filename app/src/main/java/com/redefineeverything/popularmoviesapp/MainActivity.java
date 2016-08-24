@@ -5,6 +5,7 @@ import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +36,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     MovieAdapter mMovieAdapter;
+    //sortOrder variable chosen to future proof to pass order on activity resume
+    String mSortOrder = getString(R.string.popular);
 
     //used to hide details overlay on main screen when new movie selected
     View mPreviousView;
@@ -48,21 +52,30 @@ public class MainActivity extends AppCompatActivity {
         mMovieAdapter = new MovieAdapter(this, new ArrayList<Movie>());
         gridView.setAdapter(mMovieAdapter);
         gridView.setOnItemClickListener(new MovieItemClick());
-        updatePageWithSort(getString(R.string.popular));
+        updatePageWithSort(mSortOrder);
 
     }
 
+    /*
+    * Only updates if the sort order chosen is different to the current sort order.
+    * */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        String sort_choice = null;
 
         switch (id) {
             case R.id.menuSortPopularity:
-                updatePageWithSort(getString(R.string.popular));
+                sort_choice = getString(R.string.popular);
                 break;
             case R.id.menuSortRating:
-                updatePageWithSort(getString(R.string.top_rated));
+                sort_choice = getString(R.string.top_rated);
                 break;
+        }
+
+        if (sort_choice != null && !sort_choice.equals(mSortOrder) ){
+            mSortOrder = sort_choice;
+            updatePageWithSort(mSortOrder);
         }
 
         return true;
@@ -137,13 +150,14 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(ArrayList<Movie> movies) {
-            toggleProgressBar(View.GONE);
+
             if (movies == null){
                 Toast.makeText(MainActivity.this, "Sorry, No Movies found, Check Internet connection and preferences", Toast.LENGTH_SHORT).show();
             }else {
                 mMovieAdapter.clear();
                 mMovieAdapter.addAll(movies);
             }
+            toggleProgressBar(View.GONE);
 
         }
 

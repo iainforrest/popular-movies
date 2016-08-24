@@ -7,9 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -47,6 +49,7 @@ public class MovieAdapter extends ArrayAdapter {
             holder.title = (TextView) convertView.findViewById(R.id.movie_title);
             holder.score = (TextView) convertView.findViewById(R.id.score);
             holder.releaseDate = (TextView) convertView.findViewById(R.id.release_date);
+            holder.progressBar = (ProgressBar) convertView.findViewById(R.id.progress_bar);
 
             convertView.setTag(holder);
         }else {
@@ -55,11 +58,22 @@ public class MovieAdapter extends ArrayAdapter {
 
         Movie currentMovie = (Movie) getItem(position);
 
+        holder.progressBar.setVisibility(View.VISIBLE);
         Picasso.with(getContext())
                 .load(currentMovie.getImagePath())
-                .placeholder(R.drawable.movie_placeholder)
+                .error(R.drawable.movie_placeholder)
                 .centerCrop().resize(mWidth,mHeight)
-                .into(holder.thumbImage);
+                .into(holder.thumbImage, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        holder.progressBar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onError() {
+
+                    }
+                });
         holder.rootLayout.getLayoutParams().height = mHeight;
         holder.rootLayout.getLayoutParams().width = mWidth;
 
@@ -81,5 +95,6 @@ public class MovieAdapter extends ArrayAdapter {
         private RelativeLayout overlayInfo;
         private TextView score;
         private TextView releaseDate;
+        private ProgressBar progressBar;
     }
 }
