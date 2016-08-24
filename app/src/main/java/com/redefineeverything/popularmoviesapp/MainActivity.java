@@ -37,11 +37,18 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     MovieAdapter mMovieAdapter;
     //sortOrder variable chosen to future proof to pass order on activity resume
-    String mSortOrder = getString(R.string.popular);
+    String mSortOrder;
 
     //used to hide details overlay on main screen when new movie selected
     View mPreviousView;
 
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mSortOrder = getString(R.string.popular);
+        updatePageWithSort(mSortOrder);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
         mMovieAdapter = new MovieAdapter(this, new ArrayList<Movie>());
         gridView.setAdapter(mMovieAdapter);
         gridView.setOnItemClickListener(new MovieItemClick());
-        updatePageWithSort(mSortOrder);
 
     }
 
