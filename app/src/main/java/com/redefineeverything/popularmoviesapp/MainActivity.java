@@ -8,6 +8,8 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
@@ -33,16 +35,8 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     MovieAdapter mMovieAdapter;
 
-    ArrayList<Movie> mMovieList;
-
+    //used to hide details overlay on main screen when new movie selected
     View mPreviousView;
-
-    /*Implementaion
-    * https://docs.google.com/document/d/1ZlN1fUsCSKuInLECcJkslIqvpKlP7jWL2TP9m6UiA6I/pub?embedded=true
-    *
-    * http://api.themoviedb.org/3/movie/popular?api_key=
-    * http://api.themoviedb.org/3/movie/top_rated?api_key=
-    */
 
 
     @Override
@@ -50,17 +44,44 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        toggleProgressBar(View.VISIBLE);
-
         final GridView gridView = (GridView) findViewById(R.id.main_gridview);
         mMovieAdapter = new MovieAdapter(this, new ArrayList<Movie>());
         gridView.setAdapter(mMovieAdapter);
-
-        MovieAsyncTask movieAsyncTask = new MovieAsyncTask();
-        movieAsyncTask.execute(getString(R.string.popular));
-
         gridView.setOnItemClickListener(new MovieItemClick());
+        updatePageWithSort(getString(R.string.popular));
+
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.menuSortPopularity:
+                updatePageWithSort(getString(R.string.popular));
+                break;
+            case R.id.menuSortRating:
+                updatePageWithSort(getString(R.string.top_rated));
+                break;
+        }
+
+        return true;
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.sort_menu,menu);
+        return true;
+    }
+
+    private void updatePageWithSort(String sortType){
+        MovieAsyncTask movieAsyncTask = new MovieAsyncTask();
+        movieAsyncTask.execute(sortType);
+
+
+    }
+
 
 
     private class MovieItemClick implements AdapterView.OnItemClickListener {
@@ -109,6 +130,10 @@ public class MainActivity extends AppCompatActivity {
 
         private final String LOG_TAG = MovieAsyncTask.class.getSimpleName();
 
+        @Override
+        protected void onPreExecute() {
+            toggleProgressBar(View.VISIBLE);
+        }
 
         @Override
         protected void onPostExecute(ArrayList<Movie> movies) {

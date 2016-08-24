@@ -8,5 +8,6 @@
 
     <!--Options-->
     <string name="popular">popular</string>
+    <string name="top_rated">top_rated</string>
 
 </resources>

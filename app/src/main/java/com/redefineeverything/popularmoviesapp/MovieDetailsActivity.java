@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -45,6 +47,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
         description.setText(currentMovie.getOverview());
 
     }
+
+
 
     private TextView getOrientationSpecificDescription(){
         TextView descriptionPortrait = (TextView) findViewById(R.id.description_portrait);
