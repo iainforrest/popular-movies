@@ -81,7 +81,7 @@ public class MovieAdapter extends ArrayAdapter {
         holder.score.setText(Double.toString(currentMovie.getScore()));
         holder.releaseDate.setText(currentMovie.getFormattedReleaseDate());
 
-        holder.overlayInfo.setVisibility(View.GONE);
+        //holder.overlayInfo.setVisibility(View.GONE);
 
 
         return convertView;

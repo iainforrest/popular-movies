@@ -1,5 +1,7 @@
 package com.redefineeverything.popularmoviesapp;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.app.Notification;
 import android.content.Context;
@@ -112,23 +114,29 @@ public class MainActivity extends AppCompatActivity {
             /*
                 uses the previous view (see below) and hides the info overlay.
                 So that only one is showing at a time.
-
-                problem was this doesn't work if you scroll the previous item off the screen
-                before selecting a new one. Solved (not perfectly) by resetting every item to
-                have the info hidden in the MovieAdapter.
+                Then removes the setHasTransientSate so that the view can be recycled.
                 */
             if (mPreviousView != null){
                 RelativeLayout previousOverlayInfo = (RelativeLayout) mPreviousView.findViewById(R.id.overlay_info);
+                previousOverlayInfo.animate().setDuration(200).alpha(0.0f);
                 previousOverlayInfo.setVisibility(View.GONE);
+                mPreviousView.setHasTransientState(false);
+
             }
 
-            //Find the hidden View with movie info and make visible
+
+            //Find the hidden View with movie info and make visible with an annimation.
+            //Sets the view to HasTransientState so that the view doesn't get recycled
+            //when the user scrolls and the selection state is saved.
+            view.setHasTransientState(true);
             RelativeLayout overlayInfo = (RelativeLayout) view.findViewById(R.id.overlay_info);
+            overlayInfo.setAlpha(0);
             overlayInfo.setVisibility(View.VISIBLE);
+            overlayInfo.animate().setDuration(350).alpha(1);
+
                 /*
                 * Set an onclick listener on the hidden info field, so that if the field is
                 * tapped then the user is taken to the details screen
-                * TODO: replace toast with Intent to send to details screen
                 * */
             overlayInfo.setOnClickListener(new View.OnClickListener() {
                 @Override
